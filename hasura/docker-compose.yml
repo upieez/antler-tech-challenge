@@ -1,0 +1,33 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:11
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  graphql-engine:
+    image: hasura/graphql-engine:v2.3.0
+    ports:
+      - "4000:8080"
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      ## postgres database to store Hasura metadata
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: secret
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: unauth
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS512", "key": "-----BEGIN CERTIFICATE-----\nMIIDDTCCAfWgAwIBAgIJYak2EUnC/8YrMA0GCSqGSIb3DQEBCwUAMCQxIjAgBgNV\nBAMTGWRldi1vY2N1bWF4eC5hdS5hdXRoMC5jb20wHhcNMjEwOTE5MDM0NzM3WhcN\nMzUwNTI5MDM0NzM3WjAkMSIwIAYDVQQDExlkZXYtb2NjdW1heHguYXUuYXV0aDAu\nY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwxc9WryxDAHc7GXH\nlZ0QyPdWK73u3th3E38hcUitlTOJ17gwgW/M+Z5SnIbIymRg06S2DTiuRjZM6mVS\nHtkPAAffv9tak6WZoYdCSyp2M8tMbkV5XfAQK1b+zoNmXzZzQztaO77vIQF4LjGM\nCI+JF/MTtXqV+f0FK4Dd5xwQpw2E1DCH19Ub1Rcm679eYamQ2ncgLVMW/8nea0Ea\ndVRNSr9jRMpiM5JCueoD9Nu8pHKHmc6KuZfX9XCIPUrb5kBfLHBCVF7ME5C+5pMl\nu047J1bQobdIaEgRvG2FSYnvqRHxIlezuo83Q/h0jZ0jr4/8Umjzc7ezsTE1UCZP\nh80uJwIDAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBQnGTp0vtX1\nCTR6EgqdossnZ7JgUzAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEB\nAIvu7kd0/ARVEFJ7kwgib1cTGZG69LRlhJ1rE9oHNFrtStSY4QTQsOJdjWG9L/MR\ncRFHg4WFhgqfcJnxvtURDtgBqhyehOw2nRBHEyqmK7r3VepdT8tHoSG2iW6smcqs\n3Fru3LMOCbXtsWOZSoCYdkkx/aH+eLUTYjVCWQ5S8zLvDwj4SlA44ezqG/8/FpHx\nsdd0mtFNx+VKbGfsVy9nJpejF5H42MLOFDGMZFz1pNj8bjdrRsQKxsJ5Y+14oKbs\nqF2chM+DzCHm0RylvncRCG9dUxtH4bU98hIV4nDCgPwOcbvp29AOpC5qtIkoHFHa\ngMLX9Cq4p7nMumJqWWMEUrM=\n-----END CERTIFICATE-----"}'
+volumes:
+  db_data:
