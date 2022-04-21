@@ -2,9 +2,9 @@
 
 ## Summary
 
-Antler runs cohorts around the world that accept ambitious founders looking to build a startup or propel their existing startup to success. We want to make sure that the onboarding process for founders into our system is seamless and captures the data we need to enable a successful journey at Antler.
+Antler run cohorts around the world that accept ambitious founders looking to build a startup or propel their existing startup to further success. We want to make sure that the onboarding process for founders into our system is seamless and captures the data we need to enable a successful journey at Antler.
 
-We need you to create an onboarding flow for founders and startups accepted into the Antler Program.
+Your task is to create an onboarding flow for founders and startups accepted into the Antler Program.
 
 ## Requirements
 
