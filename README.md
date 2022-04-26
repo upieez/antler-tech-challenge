@@ -36,7 +36,7 @@ A user can either be a solo founder looking to build a company or a founder of a
    - The user can select co-founders (if they have any) of a startup program from the same cohort that do not yet have a startup company assigned.
    - If another user has assigned them as a co-founder already, the user is shown the all data regarding the startup (name, size, funding, co-founders). The user can then progress past step 4. straight to the app dashboard.
 
-4. We will need to get more information about the startup. (Skip if user has has been assigned a startup already)
+4. We will need to get more information about the startup: (Skip if user has has been assigned a startup already)
 
    - Company name
    - Company size
@@ -57,7 +57,10 @@ Your solutions should contain the following technologies:
 
 ## Setup
 
-To begin, fork this repo and begin working in a new repository. The configuration for Hasura has already been setup, you will just need to follow the steps found [here](./hasura/README.md)
+To begin, fork this repo and begin working in a new repository.
+
+1. The configuration for Hasura has already been setup, you will just need to follow the steps found [here](./hasura/README.md)
+2. The NextJS project antler-onboarding has been setup with Apollo client, using the endpoint from the local Hasura instance. Just install the packages and you are good to start!
 
 ## What we are looking for
 
