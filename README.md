@@ -8,7 +8,7 @@ Your task is to create an onboarding flow for founders and startups accepted int
 
 ## Requirements
 
-A user can either be a solo founder looking to build a company or a founder of an existing, funded startup. Both user journeys will be different, as we want to capture more relevant, custom data for each user path.
+A user can either be a solo founder looking to build a company or a founder of an existing, funded startup. Once they are accepted into the program, they get invited to complete an onboarding flow. Both user journeys will be different, as we want to capture more relevant, custom data for each user path.
 
 1. Currently, we have accepted these founders into Antler. Only these users will be able to continue to the onboarding flow.
 
@@ -23,26 +23,26 @@ A user can either be a solo founder looking to build a company or a founder of a
 
    Users will have the option to sign up via email or Google.
 
-2. We will need to capture profile data:
+2. We will need to capture profile data for all founders, regardless of their program type:
 
    - Linkedin url (optional)
-   - Expertise (e.g. technical, design, product)
-   - Topics and industries of interest (e.g. blockchain, health tech, property tech)
+   - Expertise (e.g. technical, design, product) as a text field
+   - Topics and industries of interest as a list of the following options [here](#1-list-of-topics-and-industries-of-interest)
 
-### If the user is part of the startup program, we need to capture information about their startup
+### If the user is the founder of an existing startup, we need to capture information about their startup
 
 3. The user can select co-founders for their startup:
 
-   - The user can select co-founders (if they have any) from the same cohort that do not yet have a startup company assigned.
-   - If another user has assigned them as a co-founder already, the user only has the option to accept or reject that startup team.
+   - The user can select co-founders (if they have any) of a startup program from the same cohort that do not yet have a startup company assigned.
+   - If another user has assigned them as a co-founder already, the user is shown the all data regarding the startup (name, size, funding, co-founders). The user can then progress past step 4. straight to the app dashboard.
 
-4. If the user is part of the startup program, we will need to get more information about the startup. (Skip if user has accepted to be part of a startup team already)
+4. We will need to get more information about the startup. (Skip if user has has been assigned a startup already)
 
    - Company name
    - Company size
    - Funding raised
 
-5. The user is onboarded and is taken to the app dashboard
+5. The user is onboarded and is taken to the app dashboard (placeholder page that only onboarded users can access)
 
 ## Technology Stack
 
@@ -50,7 +50,7 @@ Your solutions should contain the following technologies:
 
 - React/NextJS with Typescript
 - Apollo Client
-- Chakra UI Component Library
+- React UI Component Library (e.g. Chakra UI, Mantine, Material UI)
 - Hasura GraphQL Engine
 - Auth Provider (e.g. Auth0, Firebase Auth)
 - Any additional packages/libraries that you see fit
@@ -71,3 +71,28 @@ To begin, fork this repo and begin working in a new repository. The configuratio
 ## Submission
 
 Send a link to your repository back to us when you are finished!
+
+## Appendix
+
+### 1. List of Topics and Industries of Interest
+
+- Adtech
+- Aerospace
+- Agriculture
+- Analytics
+- ArtTech
+- B2B SaaS
+- Biotech/Longevity
+- ClimateTech
+- Community
+- Construction
+- Consumer Tech
+- Creator Economy
+- Crypto, DeFi & Blockchain
+- Data/Infrastructure
+- Developer Tools
+- Drug Discovery
+- Education
+- Energy/CleanTech
+- Entertainment
+- Financial Services/FinTech
