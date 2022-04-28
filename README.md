@@ -21,7 +21,7 @@ A user can either be a solo founder looking to build a company or a founder of a
    | Oly Lotfi     | oly.lotfi@antler.co     | Berlin, Germany   | BER_0126 | Startup      |
    | Daniel Henry  | daniel.henry@antler.co  | Berlin, Germany   | BER_0126 | Startup      |
 
-   Users will have the option to sign up via email or Google.
+   Users will have the option to sign up via email and password.
 
 2. We will need to capture profile data for all founders, regardless of their program type:
 
@@ -52,8 +52,11 @@ Your solutions should contain the following technologies:
 - Apollo Client
 - React UI Component Library (e.g. Chakra UI, Mantine, Material UI)
 - Hasura GraphQL Engine
-- Auth Provider (e.g. Auth0, Firebase Auth)
 - Any additional packages/libraries that you see fit
+
+### Hasura Considerations
+
+Given this task doesn't require an auth provider, you'll need to setup tables in Hasura with permissions for an 'unauth' role. More info can be found [here](https://hasura.io/docs/latest/graphql/core/auth/authentication/unauthenticated-access/)
 
 ## Setup
 
@@ -74,6 +77,10 @@ To begin, fork this repo and begin working in a new repository.
 ## Submission
 
 Send a link to your repository back to us when you are finished!
+
+## Questions
+
+If you are having any trouble with the setup or are unsure of requirements, feel free to reach out with some questions - we'll be happy to clarify them for you.
 
 ## Appendix
 
