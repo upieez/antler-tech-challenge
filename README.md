@@ -48,7 +48,8 @@ A user can either be a solo founder looking to build a company or a founder of a
 
 Your solutions should contain the following technologies:
 
-- React/NextJS with Typescript
+- Frontend Framework (e.g. React, Angular, Vue)
+- Typescript
 - Apollo Client
 - React UI Component Library (e.g. Chakra UI, Mantine, Material UI)
 - Hasura GraphQL Engine
@@ -63,7 +64,7 @@ Given this task doesn't require an auth provider, you'll need to setup tables in
 To begin, fork this repo and begin working in a new repository.
 
 1. The configuration for Hasura has already been setup, you will just need to follow the steps found [here](./hasura/README.md)
-2. The NextJS project antler-onboarding has been setup with Apollo client, using the endpoint from the local Hasura instance. Just install the packages and you are good to start!
+2. Although you can choose to use any frontend framework, a Next.js project antler-onboarding has been setup with Apollo client, using the endpoint from the local Hasura instance. Just install the packages and you are good to start!
 
 ## What we are looking for
 
