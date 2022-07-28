@@ -13,3 +13,6 @@
 - table:
     schema: public
     name: user
+- table:
+    schema: public
+    name: user_topic_industry
