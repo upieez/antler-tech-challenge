@@ -1,12 +1,13 @@
+import { useState } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
 	FormControl,
 	FormLabel,
-	FormErrorMessage,
 	FormHelperText,
 	Input,
 	Container,
 	Heading,
-	Text,
 	Button,
 	Flex,
 	Spacer,
@@ -14,7 +15,34 @@ import {
 	Link,
 } from '@chakra-ui/react';
 
+const SIGN_UP = gql`
+	query UserSignup($email: String!, $password: String!) {
+		user(where: { email: { _eq: $email }, password: { _eq: $password } }) {
+			email
+			id
+		}
+	}
+`;
+
 export default function Signup() {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const router = useRouter();
+
+	const [signup, { data, loading, error }] = useLazyQuery(SIGN_UP, {
+		variables: { email: email, password: password },
+	});
+
+	const handleSignup = async () => {
+		const response = await signup();
+
+		if (response.data.user.length > 0) {
+			const { id } = response.data.user[0];
+			localStorage.setItem('userId', id.toString());
+			router.push('/profile');
+		}
+	};
+
 	return (
 		<Box>
 			<Heading textAlign='center' mb={8}>
@@ -23,19 +51,25 @@ export default function Signup() {
 			<Container>
 				<FormControl>
 					<FormLabel>Email</FormLabel>
-					<Input type='email' />
+					<Input
+						type='email'
+						isRequired
+						onChange={(e) => setEmail(e.target.value)}
+					/>
 					<FormLabel mt={4}>Password</FormLabel>
-					<Input type='password' />
-					<FormHelperText>
-						Make sure it&apos;s at least 8 characters including a number and a
-						lowercase letter
-					</FormHelperText>
+					<Input
+						type='password'
+						isRequired
+						onChange={(e) => setPassword(e.target.value)}
+					/>
 					<Flex mt={4}>
 						<FormHelperText>
 							Looking to login? <Link href='#'>Click here</Link>
 						</FormHelperText>
 						<Spacer />
-						<Button colorScheme='green'>Sign up</Button>
+						<Button colorScheme='green' onClick={handleSignup}>
+							Sign up
+						</Button>
 					</Flex>
 				</FormControl>
 			</Container>
