@@ -35,7 +35,7 @@ export default function Signup() {
 							Looking to login? <Link href='#'>Click here</Link>
 						</FormHelperText>
 						<Spacer />
-						<Button colorScheme='blue'>Login</Button>
+						<Button colorScheme='green'>Sign up</Button>
 					</Flex>
 				</FormControl>
 			</Container>
