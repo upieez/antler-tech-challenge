@@ -23,9 +23,11 @@ export default function Login() {
 			<Container>
 				<FormControl>
 					<FormLabel>Email</FormLabel>
-					<Input type='email' />
+					<Input type='email' isRequired />
+					<FormErrorMessage>Email is required.</FormErrorMessage>
 					<FormLabel mt={4}>Password</FormLabel>
-					<Input type='email' />
+					<Input type='password' isRequired />
+					<FormErrorMessage>Password is required.</FormErrorMessage>
 					<Flex mt={4}>
 						<FormHelperText>
 							Looking to signup? <Link href='/signup'>Click here</Link>
