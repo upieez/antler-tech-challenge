@@ -6,7 +6,6 @@ import {
 	Input,
 	Container,
 	Heading,
-	Text,
 	Button,
 	Flex,
 	Spacer,
