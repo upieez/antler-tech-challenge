@@ -2,5 +2,15 @@ actions: []
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+    - name: SignupResponse
+      relationships:
+        - remote_table:
+            schema: public
+            name: user
+          name: user
+          source: default
+          type: array
+          field_mapping:
+            userId: id
   scalars: []

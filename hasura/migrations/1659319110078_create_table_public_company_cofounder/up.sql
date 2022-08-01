@@ -1,0 +1,1 @@
+CREATE TABLE "public"."company_cofounder" ("id" serial NOT NULL, "company_id" integer NOT NULL, "cofounder_id" integer NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON UPDATE restrict ON DELETE restrict, FOREIGN KEY ("cofounder_id") REFERENCES "public"."user"("id") ON UPDATE restrict ON DELETE restrict, UNIQUE ("id"));

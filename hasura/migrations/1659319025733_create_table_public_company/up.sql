@@ -1,0 +1,1 @@
+CREATE TABLE "public"."company" ("id" serial NOT NULL, "name" text NOT NULL, "size" integer NOT NULL, "funding" integer NOT NULL, "founder" integer NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("founder") REFERENCES "public"."user"("id") ON UPDATE restrict ON DELETE restrict, UNIQUE ("id"));

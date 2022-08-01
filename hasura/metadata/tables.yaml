@@ -3,16 +3,132 @@
     name: cohort
 - table:
     schema: public
+    name: company
+  object_relationships:
+    - name: founder_info
+      using:
+        foreign_key_constraint_on: founder
+  insert_permissions:
+    - role: unauth
+      permission:
+        check: {}
+        columns:
+          - id
+          - name
+          - size
+          - funding
+          - founder
+        backend_only: false
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - founder
+          - funding
+          - id
+          - size
+          - name
+        filter: {}
+- table:
+    schema: public
+    name: company_cofounder
+  object_relationships:
+    - name: cofounder_info
+      using:
+        foreign_key_constraint_on: cofounder_id
+    - name: company_info
+      using:
+        foreign_key_constraint_on: company_id
+  insert_permissions:
+    - role: unauth
+      permission:
+        check: {}
+        columns:
+          - cofounder_id
+          - company_id
+          - id
+        backend_only: false
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - cofounder_id
+          - company_id
+          - id
+        filter: {}
+- table:
+    schema: public
     name: location
 - table:
     schema: public
     name: program
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - id
+          - type
+        filter: {}
 - table:
     schema: public
     name: topic_industry
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - id
+          - name
+        filter: {}
 - table:
     schema: public
     name: user
+  object_relationships:
+    - name: program_info
+      using:
+        foreign_key_constraint_on: program_id
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - onboarded
+          - cohort_id
+          - id
+          - location_id
+          - program_id
+          - email
+          - expertise
+          - linkedin_url
+          - name
+          - password
+          - created_at
+          - updated_at
+        filter: {}
+  update_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - cohort_id
+          - created_at
+          - email
+          - expertise
+          - id
+          - linkedin_url
+          - location_id
+          - name
+          - onboarded
+          - program_id
+          - updated_at
+        filter: {}
+        check: null
 - table:
     schema: public
     name: user_topic_industry
+  insert_permissions:
+    - role: unauth
+      permission:
+        check: {}
+        columns:
+          - id
+          - topic_industry_id
+          - user_id
+        backend_only: false
