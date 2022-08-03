@@ -1,5 +1,9 @@
 # Antler Tech Challenge
 
+## Diagram
+
+![Diagram](./tables.jpg)
+
 ## Summary
 
 Antler run cohorts around the world that accept ambitious founders looking to build a startup or propel their existing startup to further success. We want to make sure that the onboarding process for founders into our system is seamless and captures the data we need to enable a successful journey at Antler.
