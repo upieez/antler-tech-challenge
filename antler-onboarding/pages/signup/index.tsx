@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
 	FormControl,
@@ -11,25 +11,18 @@ import {
 	Button,
 	Flex,
 	Spacer,
-	Box,
+	Center,
 	Link,
+	Text,
 } from '@chakra-ui/react';
-
-const SIGN_UP = gql`
-	query UserSignup($email: String!, $password: String!) {
-		user(where: { email: { _eq: $email }, password: { _eq: $password } }) {
-			email
-			id
-		}
-	}
-`;
+import { SIGN_UP } from '../../graphql/query';
 
 export default function Signup() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
-	const [signup, { data, loading, error }] = useLazyQuery(SIGN_UP, {
+	const [signup, { data, loading, called }] = useLazyQuery(SIGN_UP, {
 		variables: { email: email, password: password },
 	});
 
@@ -44,35 +37,45 @@ export default function Signup() {
 	};
 
 	return (
-		<Box>
-			<Heading textAlign='center' mb={8}>
-				Create an account
-			</Heading>
-			<Container>
-				<FormControl>
-					<FormLabel>Email</FormLabel>
-					<Input
-						type='email'
-						isRequired
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-					<FormLabel mt={4}>Password</FormLabel>
-					<Input
-						type='password'
-						isRequired
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-					<Flex mt={4}>
-						<FormHelperText>
-							Looking to login? <Link href='#'>Click here</Link>
-						</FormHelperText>
-						<Spacer />
-						<Button colorScheme='green' onClick={handleSignup}>
-							Sign up
-						</Button>
-					</Flex>
-				</FormControl>
-			</Container>
-		</Box>
+		<Center h='100vh'>
+			<Flex direction='column' w='100%'>
+				<Heading textAlign='center' mb={8}>
+					Create an account
+				</Heading>
+				<Container>
+					<FormControl>
+						<FormLabel>Email</FormLabel>
+						<Input
+							type='email'
+							isRequired
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+						<FormLabel mt={4}>Password</FormLabel>
+						<Input
+							type='password'
+							isRequired
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+						{data && !data.user.length && (
+							<Text mt={4} color='red'>
+								Your account needs approval or has been onboarded
+							</Text>
+						)}
+						<Flex mt={4}>
+							<FormHelperText>
+								Looking to login? <Link href='/login'>Click here</Link>
+							</FormHelperText>
+							<Spacer />
+							<Button
+								isLoading={called && loading}
+								colorScheme='green'
+								onClick={handleSignup}>
+								Sign up
+							</Button>
+						</Flex>
+					</FormControl>
+				</Container>
+			</Flex>
+		</Center>
 	);
 }

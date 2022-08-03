@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
 	FormControl,
 	FormLabel,
@@ -7,16 +5,9 @@ import {
 	CheckboxGroup,
 	HStack,
 	Checkbox,
-	NumberInput,
-	NumberInputField,
 } from '@chakra-ui/react';
 
 export default function FounderForm({ formik, cofoundersList }) {
-	const format = (val) => `$` + val;
-	const parse = (val) => val.replace(/^\$/, '');
-
-	const [value, setValue] = useState('');
-
 	return (
 		<FormControl>
 			<FormLabel mt={4}>Company Name</FormLabel>
@@ -33,28 +24,30 @@ export default function FounderForm({ formik, cofoundersList }) {
 				name='companySize'
 				onChange={formik.handleChange}
 			/>
-			<FormLabel mt={4}>Funding Raised</FormLabel>
-			<NumberInput
-				onChange={(valueString) => setValue(parse(valueString))}
-				value={format(value)}
+			<FormLabel mt={4}>Funding Raised ($USD)</FormLabel>
+			<Input
+				name='companyFunding'
+				typeof='number'
 				max={10000000}
-				isRequired>
-				<NumberInputField />
-			</NumberInput>
+				onChange={formik.handleChange}
+				isRequired
+			/>
 			<FormLabel mt={4}>Select Co-Founders</FormLabel>
 			<CheckboxGroup colorScheme='blue'>
 				<HStack spacing={5} wrap='wrap'>
-					{cofoundersList.map((cofounder) => {
-						return (
-							<Checkbox
-								key={cofounder.id}
-								name='cofounders'
-								value={cofounder.id.toString()}
-								onChange={formik.handleChange}>
-								{cofounder.name}
-							</Checkbox>
-						);
-					})}
+					{cofoundersList.length > 0
+						? cofoundersList.map((cofounder) => {
+								return (
+									<Checkbox
+										key={cofounder.id}
+										name='companyCofounders'
+										value={cofounder.id.toString()}
+										onChange={formik.handleChange}>
+										{cofounder.name}
+									</Checkbox>
+								);
+						  })
+						: 'All co-founders are unavailable'}
 				</HStack>
 			</CheckboxGroup>
 		</FormControl>

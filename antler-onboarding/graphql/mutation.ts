@@ -1,15 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const POST_USER_DATA = gql`
-	type topicindustry_insert_input {
-		user_id: Int
-		topic_industry_id: Int
-	}
-
 	mutation PostUserData(
 		$linkedInUrl: String
 		$expertise: String!
-		$topicIndustry: [topicindustry_insert_input!]
+		$topicIndustry: [user_topic_industry_insert_input!]
 		$userId: Int!
 	) {
 		update_user_by_pk(
@@ -33,7 +28,7 @@ export const POST_USER_AND_COMPANY_DATA = gql`
 	mutation PostUserAndCompanyData(
 		$linkedInUrl: String
 		$expertise: String!
-		$topicIndustry: [user_topic_industry_insert_input!]
+		$topicIndustry: [user_topic_industry_insert_input!]!
 		$userId: Int!
 		$companyName: String
 		$companySize: Int
@@ -50,7 +45,7 @@ export const POST_USER_AND_COMPANY_DATA = gql`
 			id
 		}
 
-		insert_user_topic_industry(objects: $topicIndustry!) {
+		insert_user_topic_industry(objects: $topicIndustry) {
 			affected_rows
 		}
 
@@ -63,6 +58,16 @@ export const POST_USER_AND_COMPANY_DATA = gql`
 			}
 		) {
 			id
+		}
+	}
+`;
+
+export const POST_COMPANY_COFOUNDERS = gql`
+	mutation PostCompanyCofounders(
+		$companyCofounders: [company_cofounder_insert_input!]!
+	) {
+		insert_company_cofounder(objects: $companyCofounders) {
+			affected_rows
 		}
 	}
 `;

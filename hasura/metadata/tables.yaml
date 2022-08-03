@@ -132,3 +132,11 @@
           - topic_industry_id
           - user_id
         backend_only: false
+  select_permissions:
+    - role: unauth
+      permission:
+        columns:
+          - id
+          - topic_industry_id
+          - user_id
+        filter: {}

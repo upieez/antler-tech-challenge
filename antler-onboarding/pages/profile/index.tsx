@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { useQuery, useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import { GET_USER_DATA } from '../../graphql/query';
 import {
 	POST_USER_DATA,
 	POST_USER_AND_COMPANY_DATA,
+	POST_COMPANY_COFOUNDERS,
 } from '../../graphql/mutation';
 import {
 	Container,
@@ -15,72 +17,86 @@ import {
 	Box,
 	Center,
 } from '@chakra-ui/react';
+import {
+	formatSubmitData,
+	formikInitialValues,
+	filterCompanyAndUserData,
+} from './helper';
 import FounderForm from '../../components/FounderForm';
 import OnboardForm from '../../components/OnboardForm';
+import CompanyDetails from '../../components/CompanyDetails';
 
 export default function Profile() {
-	let userRef = useRef({ userId: 0 });
-
 	const [isFounder, setFounder] = useState(false);
 	const [cofoundersList, setCofounders] = useState([]);
+	const [companyDetails, setCompanydetails] = useState();
+	const userRef = useRef({ userId: 0 });
 	const { data, loading } = useQuery(GET_USER_DATA);
 	const [submitData] = useMutation(
 		isFounder ? POST_USER_AND_COMPANY_DATA : POST_USER_DATA
 	);
+	const [submitCofounders] = useMutation(POST_COMPANY_COFOUNDERS);
+
+	const router = useRouter();
 
 	useEffect(() => {
 		const userId = parseInt(localStorage.getItem('userId'));
+		if (!userId) router.push('/');
 		userRef.current.userId = userId;
 
 		if (data) {
 			if (Array.isArray(data.user)) {
-				const [currentUser] = data.user.filter((user) => {
-					return user.id === userId;
-				});
-
-				const users = data.user.filter((user) => {
-					return user.program_id === currentUser.program_id;
-				});
+				const { currentUser, cofounderCompanyId, availableFounders, company } =
+					filterCompanyAndUserData(data, userId);
 
 				if (currentUser.program_info.type === 'Startup') {
 					setFounder(true);
 				}
 
-				if (users.length > 0) {
-					setCofounders(users);
+				if (availableFounders.length > 0) {
+					setCofounders(availableFounders);
+				}
+
+				if (cofounderCompanyId) {
+					setCompanydetails(company.company_info);
 				}
 			}
 		}
-	}, [data]);
+	}, [data, router]);
 
 	const formik = useFormik({
-		initialValues: {
-			linkedInUrl: '',
-			expertise: '',
-			topicIndustry: [],
-			companyName: '',
-			companySize: '',
-			companyFunding: '',
-			cofounders: [],
-		},
-		onSubmit: (values) => {
-			submitData({
+		initialValues: formikInitialValues,
+		onSubmit: async (values) => {
+			const userId = userRef.current.userId;
+			const submitVariables = formatSubmitData(values, userId);
+
+			const { data } = await submitData({
 				variables: {
-					linkedInUrl: values.linkedInUrl,
-					expertise: values.expertise,
-					topicIndustry: values.topicIndustry.map((value) => {
-						return { userId: userRef.current.userId, topic_industry_id: value };
-					}),
-					userId: userRef.current.userId,
-					companyName: values.companyName,
-					companySize: values.companySize,
-					companyFunding: values.companyFunding,
+					...submitVariables,
+					userId,
 				},
-			}).then((result) => console.log(result));
+			});
+
+			if (values.companyCofounders.length > 0) {
+				const companyCofounders = values.companyCofounders.map((cofounder) => {
+					return {
+						company_id: data.insert_company_one.id,
+						cofounder_id: parseInt(cofounder),
+					};
+				});
+
+				await submitCofounders({
+					variables: {
+						companyCofounders: companyCofounders,
+					},
+				});
+			}
+
+			router.push('/dashboard');
 		},
 	});
 
-	if (loading) return <div>hello</div>;
+	if (loading) return <div>Skeleton</div>;
 
 	return (
 		<Center h='100vh'>
@@ -91,8 +107,11 @@ export default function Profile() {
 				<Container borderWidth='1px' borderRadius='lg' p={4}>
 					<form onSubmit={formik.handleSubmit}>
 						<OnboardForm formik={formik} />
-						{isFounder && (
+						{isFounder && !companyDetails && (
 							<FounderForm formik={formik} cofoundersList={cofoundersList} />
+						)}
+						{companyDetails && (
+							<CompanyDetails companyDetails={companyDetails} />
 						)}
 						<Flex mt={4}>
 							<Spacer />
