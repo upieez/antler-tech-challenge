@@ -9,8 +9,14 @@ import {
 	Checkbox,
 	Skeleton,
 } from '@chakra-ui/react';
+import { FormikProps } from 'formik';
+import { FormikInitialValues } from '../pages/profile/types';
 
-export default function OnboardForm({ formik }) {
+interface IProps {
+	formik: FormikProps<FormikInitialValues>;
+}
+
+export default function OnboardForm({ formik }: IProps) {
 	const { data, loading } = useQuery(GET_USER_DATA);
 
 	if (loading) return <Skeleton height='20px' />;

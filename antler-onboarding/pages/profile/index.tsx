@@ -25,17 +25,35 @@ import {
 import FounderForm from '../../components/FounderForm';
 import OnboardForm from '../../components/OnboardForm';
 import CompanyDetails from '../../components/CompanyDetails';
+import {
+	CofoundersData,
+	CofoundersVars,
+	SubmitUserAndCompanyData,
+	SubmitUserAndCompanyVars,
+	SubmitUserData,
+	SubmitUserVars,
+	UserData,
+	UserProfile,
+} from './types';
+import { Company } from '../../types';
 
 export default function Profile() {
 	const [isFounder, setFounder] = useState(false);
-	const [cofoundersList, setCofounders] = useState([]);
-	const [companyDetails, setCompanydetails] = useState();
+	const [cofoundersList, setCofounders] = useState<UserProfile[]>([]);
+	const [companyDetails, setCompanydetails] = useState<Company>();
 	const userRef = useRef({ userId: 0 });
-	const { data, loading } = useQuery(GET_USER_DATA);
-	const [submitData] = useMutation(
-		isFounder ? POST_USER_AND_COMPANY_DATA : POST_USER_DATA
+
+	const { data, loading } = useQuery<UserData>(GET_USER_DATA);
+	const [submitUserAndCompanyData] = useMutation<
+		SubmitUserAndCompanyData,
+		SubmitUserAndCompanyVars
+	>(POST_USER_AND_COMPANY_DATA);
+	const [submitUserData] = useMutation<SubmitUserData, SubmitUserVars>(
+		POST_USER_DATA
 	);
-	const [submitCofounders] = useMutation(POST_COMPANY_COFOUNDERS);
+	const [submitCofounders] = useMutation<CofoundersData, CofoundersVars>(
+		POST_COMPANY_COFOUNDERS
+	);
 
 	const router = useRouter();
 
@@ -69,30 +87,52 @@ export default function Profile() {
 		onSubmit: async (values) => {
 			const userId = userRef.current.userId;
 			const submitVariables = formatSubmitData(values, userId);
+			console.log(
+				'🚀 ~ file: index.tsx ~ line 90 ~ onSubmit: ~ submitVariables',
+				submitVariables
+			);
+			let response;
 
-			const { data } = await submitData({
-				variables: {
-					...submitVariables,
-					userId,
-				},
-			});
+			try {
+				if (isFounder) {
+					const { data } = await submitUserAndCompanyData({
+						variables: {
+							...submitVariables,
+							userId,
+						},
+					});
+					response = data;
+				} else {
+					const { data } = await submitUserData({
+						variables: {
+							...submitVariables,
+							userId,
+						},
+					});
+					response = data;
+				}
 
-			if (values.companyCofounders.length > 0) {
-				const companyCofounders = values.companyCofounders.map((cofounder) => {
-					return {
-						company_id: data.insert_company_one.id,
-						cofounder_id: parseInt(cofounder),
-					};
-				});
+				if (values.companyCofounders.length > 0) {
+					const companyCofounders = values.companyCofounders.map(
+						(cofounder) => {
+							return {
+								company_id: response.insert_company_one.id,
+								cofounder_id: parseInt(cofounder),
+							};
+						}
+					);
 
-				await submitCofounders({
-					variables: {
-						companyCofounders: companyCofounders,
-					},
-				});
+					await submitCofounders({
+						variables: {
+							companyCofounders: companyCofounders,
+						},
+					});
+				}
+
+				router.push('/dashboard');
+			} catch (error) {
+				console.log(error);
 			}
-
-			router.push('/dashboard');
 		},
 	});
 

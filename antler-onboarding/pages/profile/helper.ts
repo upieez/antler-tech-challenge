@@ -1,4 +1,9 @@
-export const formatSubmitData = (values, userId) => {
+import { FormikInitialValues, UserData } from './types';
+
+export const formatSubmitData = (
+	values: FormikInitialValues,
+	userId: number
+) => {
 	const topicIndustry = values.topicIndustry.map((value) => {
 		return {
 			user_id: userId,
@@ -16,7 +21,7 @@ export const formatSubmitData = (values, userId) => {
 	};
 };
 
-export const formikInitialValues = {
+export const formikInitialValues: FormikInitialValues = {
 	linkedInUrl: null,
 	expertise: '',
 	topicIndustry: [],
@@ -26,7 +31,7 @@ export const formikInitialValues = {
 	companyCofounders: [],
 };
 
-export const filterCompanyAndUserData = (data, userId) => {
+export const filterCompanyAndUserData = (data: UserData, userId: number) => {
 	const [currentUser] = data.user.filter((user) => {
 		return user.id === userId;
 	});

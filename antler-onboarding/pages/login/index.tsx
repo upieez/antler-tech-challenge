@@ -17,15 +17,19 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { LOG_IN } from '../../graphql/query';
+import { LoginData, LoginVars } from './types';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
-	const [login, { data, loading, called }] = useLazyQuery(LOG_IN, {
-		variables: { email: email, password: password },
-	});
+	const [login, { data, loading, called }] = useLazyQuery<LoginData, LoginVars>(
+		LOG_IN,
+		{
+			variables: { email: email, password: password },
+		}
+	);
 
 	const handleLogin = async () => {
 		const response = await login();

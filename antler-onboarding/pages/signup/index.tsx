@@ -16,13 +16,17 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { SIGN_UP } from '../../graphql/query';
+import { SignUpData, SignUpVars } from './types';
 
 export default function Signup() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
-	const [signup, { data, loading, called }] = useLazyQuery(SIGN_UP, {
+	const [signup, { data, loading, called }] = useLazyQuery<
+		SignUpData,
+		SignUpVars
+	>(SIGN_UP, {
 		variables: { email: email, password: password },
 	});
 

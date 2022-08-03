@@ -6,8 +6,15 @@ import {
 	HStack,
 	Checkbox,
 } from '@chakra-ui/react';
+import { UserProfile, FormikInitialValues } from '../pages/profile/types';
+import { FormikProps } from 'formik';
 
-export default function FounderForm({ formik, cofoundersList }) {
+interface IProps {
+	formik: FormikProps<FormikInitialValues>;
+	cofoundersList: UserProfile[];
+}
+
+export default function FounderForm({ formik, cofoundersList }: IProps) {
 	return (
 		<FormControl>
 			<FormLabel mt={4}>Company Name</FormLabel>

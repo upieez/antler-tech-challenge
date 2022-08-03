@@ -1,6 +1,11 @@
 import { UnorderedList, ListItem, Box, Text } from '@chakra-ui/react';
+import { Company } from '../types';
 
-export default function CompanyDetails({ companyDetails }) {
+interface IProps {
+	companyDetails: Company;
+}
+
+export default function CompanyDetails({ companyDetails }: IProps) {
 	return (
 		<Box mt={4}>
 			<Text mb={4}>Your company details</Text>
